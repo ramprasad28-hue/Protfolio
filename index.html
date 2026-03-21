@@ -126,7 +126,7 @@
     .skill-name { font-weight: 600; font-size: 0.9rem; }
     .skill-pct { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); font-weight: 500; }
     .skill-bar-bg { height: 5px; background: var(--bg3); border-radius: 100px; overflow: hidden; }
-    .skill-bar-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--accent), #d4855e); width: 0; transition: width 1s cubic-bezier(0.22,1,0.36,1); }
+    .skill-bar-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--accent), #d4855e); transition: width 0.8s ease; }
 
     /* PROJECTS */
     .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
@@ -149,6 +149,13 @@
     .proj-status::before { content: ''; width: 5px; height: 5px; background: #d97706; border-radius: 50%; animation: blink 2s infinite; }
     .proj-link { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-size: 0.85rem; font-weight: 600; text-decoration: none; letter-spacing: 0.02em; transition: gap 0.2s; }
     .proj-link:hover { gap: 10px; }
+    .proj-challenge-badge { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #1a1614, #3b3528); color: #f0e0d6; font-family: var(--mono); font-size: 0.68rem; padding: 5px 14px; border-radius: 100px; margin-bottom: 14px; letter-spacing: 0.04em; width: fit-content; }
+    .proj-challenge-badge .badge-star { color: #f5c842; font-size: 0.75rem; }
+    .proj-modules { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    .proj-module { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+    .proj-module-icon { font-size: 1rem; margin-bottom: 4px; }
+    .proj-module-title { font-size: 0.78rem; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+    .proj-module-desc { font-size: 0.72rem; color: var(--muted); font-weight: 300; line-height: 1.5; }
 
     /* CONTACT */
     .contact-layout { display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px; align-items: start; }
@@ -178,8 +185,7 @@
     .footer-socials a:hover { color: #fff; }
 
     /* REVEAL */
-    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.up { opacity: 1; transform: none; }
+    .reveal { opacity: 1; transform: none; }
 
     /* RESPONSIVE */
     @media (max-width: 960px) {
@@ -221,7 +227,7 @@
     <div>
       <div class="hero-tag">Open to Internship &amp; Collaboration</div>
       <h1 class="hero-heading">Building the Web.<br><em>Securing the Stack.</em></h1>
-      <p class="hero-sub">Hi, I'm <strong>Ram Prasad S M</strong> — a 3rd-year CS student from Madurai passionate about <strong>web development</strong> and <strong>cybersecurity</strong>. I build things, then try to break them.</p>
+      <p class="hero-sub">Hi, I'm <strong>Ram Prasad S M</strong> — a 3rd-year CS student from Erode, Tamil Nadu passionate about <strong>web development</strong> and <strong>cybersecurity</strong>. I build things, then try to break them.</p>
       <div class="hero-actions">
         <a href="#projects" class="btn btn-fill">See My Projects →</a>
         <a href="#contact" class="btn btn-outline">Let's Talk</a>
@@ -303,12 +309,12 @@
       </div>
     </div>
     <div class="skills-grid reveal">
-      <div class="skill-row"><div class="skill-row-top"><span class="skill-name">HTML5</span><span class="skill-pct">85%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-w="85"></div></div></div>
-      <div class="skill-row"><div class="skill-row-top"><span class="skill-name">CSS3 &amp; Responsive Design</span><span class="skill-pct">78%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-w="78"></div></div></div>
-      <div class="skill-row"><div class="skill-row-top"><span class="skill-name">JavaScript (Vanilla)</span><span class="skill-pct">62%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-w="62"></div></div></div>
-      <div class="skill-row"><div class="skill-row-top"><span class="skill-name">Network Security</span><span class="skill-pct">70%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-w="70"></div></div></div>
-      <div class="skill-row"><div class="skill-row-top"><span class="skill-name">IoT / ESP32</span><span class="skill-pct">55%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-w="55"></div></div></div>
-      <div class="skill-row"><div class="skill-row-top"><span class="skill-name">Git &amp; Version Control</span><span class="skill-pct">60%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-w="60"></div></div></div>
+      <div class="skill-row"><div class="skill-row-top"><span class="skill-name">HTML5</span><span class="skill-pct">85%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:85%"></div></div></div>
+      <div class="skill-row"><div class="skill-row-top"><span class="skill-name">CSS3 &amp; Responsive Design</span><span class="skill-pct">78%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:78%"></div></div></div>
+      <div class="skill-row"><div class="skill-row-top"><span class="skill-name">JavaScript (Vanilla)</span><span class="skill-pct">62%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:62%"></div></div></div>
+      <div class="skill-row"><div class="skill-row-top"><span class="skill-name">Network Security</span><span class="skill-pct">70%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:70%"></div></div></div>
+      <div class="skill-row"><div class="skill-row-top"><span class="skill-name">IoT / ESP32</span><span class="skill-pct">55%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:55%"></div></div></div>
+      <div class="skill-row"><div class="skill-row-top"><span class="skill-name">Git &amp; Version Control</span><span class="skill-pct">60%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:60%"></div></div></div>
     </div>
   </div>
 </div>
@@ -333,6 +339,63 @@
         <p class="proj-desc">A full-stack cyber defense framework simulating real-world attack and defense scenarios. Features a Red Team attack simulator, Blue Team monitoring layer, a honeypot that traps and collects attacker data, and an <strong>ESP32 IoT module</strong> that fires real-time hardware alerts when threats are detected.</p>
         <div class="proj-tags"><span class="proj-tag">Network Security</span><span class="proj-tag">ESP32</span><span class="proj-tag">Honeypot</span><span class="proj-tag">Red Team</span><span class="proj-tag">Blue Team</span><span class="proj-tag">IoT</span></div>
         <a href="about trinet.html" class="proj-link">View Project Details →</a>
+      </div>
+    </div>
+
+    <!-- HALLEYX DASHBOARD BUILDER -->
+    <div class="project-card big reveal">
+      <div class="pv" style="background:linear-gradient(145deg,#1e1a14,#2d2820);">
+        <div class="pv-dots" style="opacity:0.12"></div>
+        <div style="position:relative;z-index:1;text-align:center;">
+          <div style="font-size:2.6rem;margin-bottom:12px;">📊</div>
+          <div style="font-family:var(--mono);font-size:0.65rem;color:rgba(240,224,214,0.65);line-height:2.1;">
+            orders.count → 128<br>
+            widgets.render() ✓<br>
+            api.endpoints → 10+<br>
+            <span style="color:#6fcf97;">status: DELIVERED ✓</span>
+          </div>
+        </div>
+        <div class="pv-label" style="background:rgba(20,16,12,0.75);color:#f0d6c8;border-color:rgba(240,200,180,0.2);">Full Stack · Production</div>
+      </div>
+      <div class="pb">
+        <div class="proj-type">Full Stack · Django · Chart.js · MySQL</div>
+        <div class="proj-challenge-badge">
+          <span class="badge-star">★</span>&nbsp;Halleyx Pre-Placement Challenge 2026 &nbsp;·&nbsp; Delivered in &lt;24 hrs &nbsp;·&nbsp; 400+ Participants
+        </div>
+        <div class="proj-title">Custom Dashboard Builder</div>
+        <p class="proj-desc">A production-ready analytics platform where users build personalized dashboards from live Customer Order data using drag-and-drop widgets. Backed by a Django REST API, MySQL, and pure Vanilla JS — no frontend framework, demonstrating strong JavaScript fundamentals.</p>
+        <div class="proj-modules">
+          <div class="proj-module">
+            <div class="proj-module-icon">📋</div>
+            <div class="proj-module-title">Orders Management</div>
+            <div class="proj-module-desc">Full CRUD, 15-field form, CSV upload, live search, auto-calculated totals</div>
+          </div>
+          <div class="proj-module">
+            <div class="proj-module-icon">⚙️</div>
+            <div class="proj-module-title">Config Engine</div>
+            <div class="proj-module-desc">7 widget types, per-widget settings, layout persisted to MySQL via REST API</div>
+          </div>
+          <div class="proj-module">
+            <div class="proj-module-icon">📈</div>
+            <div class="proj-module-title">Analytics Dashboard</div>
+            <div class="proj-module-desc">KPIs, Bar/Line/Pie/Area/Scatter charts, date filters, empty state handling</div>
+          </div>
+          <div class="proj-module">
+            <div class="proj-module-icon">🎨</div>
+            <div class="proj-module-title">Design &amp; UX</div>
+            <div class="proj-module-desc">Dark/light toggle, fully responsive, toast notifications, skeleton loaders</div>
+          </div>
+        </div>
+        <div class="proj-tags">
+          <span class="proj-tag">Django REST Framework</span>
+          <span class="proj-tag">MySQL</span>
+          <span class="proj-tag">Vanilla JS</span>
+          <span class="proj-tag">Chart.js</span>
+          <span class="proj-tag">CSS Variables</span>
+          <span class="proj-tag">10+ REST APIs</span>
+          <span class="proj-tag">Drag &amp; Drop</span>
+          <span class="proj-tag">Responsive</span>
+        </div>
       </div>
     </div>
 
@@ -428,13 +491,7 @@
     document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
   });
 
-  // Scroll reveal
-  const ro = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) { setTimeout(() => e.target.classList.add('up'), i * 90); ro.unobserve(e.target); }
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+  // Sections always visible
 
   // Animate skill bars when visible
   const barObs = new IntersectionObserver((entries) => {
@@ -456,12 +513,4 @@
     if (!n)  return alert('Please enter your name.');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return alert('Please enter a valid email.');
     if (!s)  return alert('Please add a subject.');
-    if (m.length < 10) return alert('Message must be at least 10 characters.');
-    ['c-name','c-email','c-sub','c-msg'].forEach(id => document.getElementById(id).value = '');
-    const ok = document.getElementById('form-success');
-    ok.style.display = 'block';
-    setTimeout(() => ok.style.display = 'none', 5000);
-  }
-</script>
-</body>
-</html>
+    if (m.length < 10) return alert('Message m
