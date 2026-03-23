@@ -1,83 +1,351 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notes App — Ram Prasad S M</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #faf7f2; --bg2: #f3ede3; --bg3: #ede6d8;
+      --white: #ffffff; --ink: #1e1a14; --ink2: #3b3528; --muted: #8c8070;
+      --accent: #b85c38; --accent-lt: #f0e0d6;
+      --green: #3d6b4f; --green-lt: #dff0e4;
+      --border: #e0d8cc;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Plus Jakarta Sans', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --shadow: 0 2px 16px rgba(30,26,20,0.07);
+      --shadow-lg: 0 8px 40px rgba(30,26,20,0.12);
+      --radius: 12px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: radial-gradient(var(--border) 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0.45; pointer-events: none; z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 48px;
+      background: rgba(250,247,242,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; color: var(--ink); text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 0.82rem; font-weight: 500; color: var(--muted);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+
+    /* MAIN */
+    main {
+      position: relative; z-index: 1;
+      flex: 1;
+      padding: 110px 24px 60px;
+      display: flex; justify-content: center;
+    }
+    .notes-wrap { width: 100%; max-width: 560px; }
+
+    /* HEADER */
+    .notes-header { margin-bottom: 32px; }
+    .notes-eyebrow {
+      font-family: var(--mono); font-size: 0.7rem;
+      color: var(--accent); letter-spacing: 0.12em;
+      text-transform: uppercase; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .notes-eyebrow::before { content:''; width:22px; height:1.5px; background:var(--accent); }
+    .notes-title {
+      font-family: var(--serif);
+      font-size: 2.6rem; font-weight: 700;
+      line-height: 1.1; letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+    .notes-title em { font-style: italic; color: var(--accent); }
+    .notes-sub { font-size: 0.88rem; color: var(--muted); font-weight: 300; }
+
+    /* INPUT */
+    .input-row {
+      display: flex; gap: 10px;
+      margin-bottom: 28px;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 6px 6px 6px 16px;
+      box-shadow: var(--shadow);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .input-row:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(184,92,56,0.1);
+    }
+    #noteInput {
+      flex: 1; border: none; outline: none;
+      font-family: var(--sans); font-size: 0.92rem;
+      color: var(--ink); background: transparent;
+      padding: 6px 0;
+    }
+    #noteInput::placeholder { color: var(--muted); }
+    #addNote {
+      background: var(--accent); color: #fff;
+      border: none; border-radius: 8px;
+      padding: 10px 20px;
+      font-family: var(--sans); font-size: 0.85rem; font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+    #addNote:hover { opacity: 0.88; transform: translateY(-1px); }
+    #addNote:active { transform: translateY(0); }
+
+    /* STATS BAR */
+    .stats-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .stats-count {
+      font-family: var(--mono); font-size: 0.72rem;
+      color: var(--muted); letter-spacing: 0.06em;
+    }
+    .stats-count span { color: var(--accent); font-weight: 500; }
+    .clear-all {
+      font-family: var(--mono); font-size: 0.68rem;
+      color: var(--muted); background: none; border: none;
+      cursor: pointer; letter-spacing: 0.06em;
+      text-transform: uppercase; transition: color 0.2s;
+      display: none;
+    }
+    .clear-all:hover { color: #c0392b; }
+    .clear-all.show { display: block; }
+
+    /* EMPTY STATE */
+    .empty-state {
+      text-align: center; padding: 60px 20px;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+    }
+    .empty-icon { font-size: 2.8rem; opacity: 0.4; }
+    .empty-title { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; color: var(--muted); }
+    .empty-sub { font-size: 0.82rem; color: var(--muted); font-weight: 300; }
+
+    /* NOTE LIST */
+    #noteList { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+    .note-item {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 14px;
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+      animation: noteIn 0.25s ease;
+    }
+    @keyframes noteIn {
+      from { opacity:0; transform: translateY(8px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+    .note-item:hover { box-shadow: var(--shadow-lg); transform: translateX(3px); border-color: var(--accent); }
+
+    .note-left { display: flex; align-items: flex-start; gap: 12px; flex: 1; min-width: 0; }
+    .note-bullet {
+      width: 7px; height: 7px; flex-shrink: 0;
+      background: var(--accent); border-radius: 50%;
+      margin-top: 7px;
+    }
+    .note-text {
+      font-size: 0.92rem; color: var(--ink2);
+      line-height: 1.6; word-break: break-word;
+    }
+    .note-time {
+      font-family: var(--mono); font-size: 0.62rem;
+      color: var(--muted); margin-top: 4px;
+    }
+
+    .note-del {
+      flex-shrink: 0; width: 28px; height: 28px;
+      background: none; border: 1px solid var(--border);
+      border-radius: 6px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: 0.8rem;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .note-del:hover { background: #fde8e8; border-color: #e0a0a0; color: #c0392b; }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--ink); color: rgba(255,255,255,0.9);
+      font-family: var(--mono); font-size: 0.75rem;
+      padding: 10px 20px; border-radius: 100px;
+      box-shadow: var(--shadow-lg);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      opacity: 0; pointer-events: none; z-index: 200;
+      white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* FOOTER */
+    footer {
+      position: relative; z-index: 1;
+      background: var(--ink); color: rgba(255,255,255,0.45);
+      padding: 24px 48px; font-size: 0.78rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    footer span { color: var(--accent); }
+    footer a { color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: #fff; }
+  </style>
 </head>
-<style>
-#notes {
-  text-align: center;
-  margin: 40px auto;
-  max-width: 400px;
-}
-
-#noteInput {
-  padding: 10px;
-  width: 70%;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-#addNote {
-  padding: 10px 20px;
-  margin-left: 10px;
-  border: none;
-  border-radius: 8px;
-  /* background: linear-gradient(135deg, #6a11cb, #2575fc); */
-  background-color: black;
-  color: rgb(226, 225, 225);
-  cursor: pointer;
-}
-
-#noteList {
-  margin-top: 20px;
-  list-style: none;
-  padding: 0;
-}
-
-#noteList li {
-  background: whitesmoke;
-  margin: 10px 0;
-  padding: 12px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}</style>
 <body>
-    <section id="notes">
-  <h2>My Notes</h2>
-  <input type="text" id="noteInput" placeholder="Write your note here...">
-  <button id="addNote">Add</button>
-  <ul id="noteList"></ul>
-</section>
+
+<nav>
+  <a href="index.html" class="logo">Ram<span>.</span></a>
+  <a href="index.html" class="nav-back">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Portfolio
+  </a>
+</nav>
+
+<main>
+  <div class="notes-wrap">
+
+    <div class="notes-header">
+      <div class="notes-eyebrow">Personal Notes App</div>
+      <h1 class="notes-title">My <em>Notes.</em></h1>
+      <p class="notes-sub">Click any note to delete it. Notes persist across sessions via localStorage.</p>
+    </div>
+
+    <div class="input-row">
+      <input type="text" id="noteInput" placeholder="Write a new note and press Add…" autocomplete="off" />
+      <button id="addNote">+ Add</button>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stats-count"><span id="noteCount">0</span> notes saved</div>
+      <button class="clear-all" id="clearAll">Clear all</button>
+    </div>
+
+    <div id="emptyState" class="empty-state">
+      <div class="empty-icon">📝</div>
+      <div class="empty-title">No notes yet.</div>
+      <div class="empty-sub">Add your first note above — it'll be saved automatically.</div>
+    </div>
+
+    <ul id="noteList"></ul>
+
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  <p>© 2025 <span>Ram Prasad S M</span> — Notes App</p>
+  <a href="index.html">← Portfolio</a>
+</footer>
+
 <script>
-const noteInput = document.getElementById("noteInput");
-const addNoteBtn = document.getElementById("addNote");
-const noteList = document.getElementById("noteList");
-let notes = JSON.parse(localStorage.getItem("notes")) || [];
-function displayNotes() {
-  noteList.innerHTML = "";
-  notes.forEach((note, index) => {
-    let li = document.createElement("li");
-    li.textContent = note;
-    li.addEventListener("click", () => deleteNote(index));
-    noteList.appendChild(li);
-  });
-}
-function addNote() {
-  if (noteInput.value.trim() !== "") {
-    notes.push(noteInput.value);
-    localStorage.setItem("notes", JSON.stringify(notes));
-    noteInput.value = "";
-    displayNotes();
+  const input     = document.getElementById('noteInput');
+  const addBtn    = document.getElementById('addNote');
+  const list      = document.getElementById('noteList');
+  const countEl   = document.getElementById('noteCount');
+  const emptyEl   = document.getElementById('emptyState');
+  const clearBtn  = document.getElementById('clearAll');
+  const toast     = document.getElementById('toast');
+
+  let notes = JSON.parse(localStorage.getItem('ram-notes') || '[]');
+
+  function save() {
+    localStorage.setItem('ram-notes', JSON.stringify(notes));
   }
-}
-function deleteNote(index) {
-  notes.splice(index, 1);
-  localStorage.setItem("notes", JSON.stringify(notes));
-  displayNotes();
-}
-addNoteBtn.addEventListener("click", addNote);
-displayNotes();</script>
+
+  function formatTime(ts) {
+    const d = new Date(ts);
+    return d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })
+      + ' · ' + d.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+  }
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2200);
+  }
+
+  function render() {
+    list.innerHTML = '';
+    countEl.textContent = notes.length;
+    emptyEl.style.display = notes.length === 0 ? 'flex' : 'none';
+    clearBtn.classList.toggle('show', notes.length > 0);
+
+    notes.forEach((n, i) => {
+      const li = document.createElement('li');
+      li.className = 'note-item';
+      li.innerHTML = `
+        <div class="note-left">
+          <span class="note-bullet"></span>
+          <div>
+            <div class="note-text">${escHtml(n.text)}</div>
+            <div class="note-time">${formatTime(n.ts)}</div>
+          </div>
+        </div>
+        <button class="note-del" title="Delete note">✕</button>
+      `;
+      li.querySelector('.note-del').addEventListener('click', () => deleteNote(i));
+      list.appendChild(li);
+    });
+  }
+
+  function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function addNote() {
+    const text = input.value.trim();
+    if (!text) { input.focus(); showToast('✏️ Write something first'); return; }
+    notes.unshift({ text, ts: Date.now() });
+    save(); render();
+    input.value = '';
+    input.focus();
+    showToast('✓ Note saved');
+  }
+
+  function deleteNote(i) {
+    notes.splice(i, 1);
+    save(); render();
+    showToast('🗑 Note deleted');
+  }
+
+  clearBtn.addEventListener('click', () => {
+    if (notes.length === 0) return;
+    if (confirm('Clear all ' + notes.length + ' notes?')) {
+      notes = []; save(); render();
+      showToast('🗑 All notes cleared');
+    }
+  });
+
+  addBtn.addEventListener('click', addNote);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') addNote(); });
+
+  render();
+</script>
 </body>
 </html>

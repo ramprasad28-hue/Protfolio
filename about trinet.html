@@ -1,237 +1,557 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TRINETRA</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRINETRA — IoT Cyber Defense System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:        #faf7f2;
+      --bg2:       #f3ede3;
+      --bg3:       #ede6d8;
+      --white:     #ffffff;
+      --ink:       #1e1a14;
+      --ink2:      #3b3528;
+      --muted:     #8c8070;
+      --accent:    #b85c38;
+      --accent-lt: #f0e0d6;
+      --green:     #3d6b4f;
+      --green-lt:  #dff0e4;
+      --red:       #c0392b;
+      --blue:      #2c5f8a;
+      --blue-lt:   #ddeaf7;
+      --border:    #e0d8cc;
+      --serif:     'Cormorant Garamond', Georgia, serif;
+      --sans:      'Plus Jakarta Sans', sans-serif;
+      --mono:      'JetBrains Mono', monospace;
+      --radius:    12px;
+      --shadow:    0 2px 20px rgba(30,26,20,0.07);
+      --shadow-lg: 0 8px 40px rgba(30,26,20,0.12);
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.75; overflow-x: hidden; }
+    ::selection { background: var(--accent); color: #fff; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 64px;
+      background: rgba(250,247,242,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-family: var(--serif); font-size: 1.5rem; font-weight: 700; color: var(--ink); text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.85rem; font-weight: 500; color: var(--muted);
+      text-decoration: none; letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+    .nav-back svg { transition: transform 0.2s; }
+    .nav-back:hover svg { transform: translateX(-3px); }
+
+    /* HERO */
+    .hero {
+      padding: 140px 64px 80px;
+      max-width: 1160px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 380px;
+      gap: 80px; align-items: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 0.72rem;
+      color: var(--red); background: rgba(192,57,43,0.08);
+      border: 1px solid rgba(192,57,43,0.2);
+      padding: 5px 14px; border-radius: 100px;
+      margin-bottom: 20px; letter-spacing: 0.05em;
+    }
+    .hero-eyebrow::before { content:''; width:6px; height:6px; background:var(--red); border-radius:50%; animation:blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 700; line-height: 1.08;
+      letter-spacing: -0.01em; margin-bottom: 16px;
+    }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+    .hero-sub { font-size: 1.05rem; color: var(--muted); font-weight: 300; margin-bottom: 32px; max-width: 520px; }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; }
+    .hero-tag {
+      font-family: var(--mono); font-size: 0.7rem;
+      color: var(--ink2); background: var(--white);
+      border: 1px solid var(--border);
+      padding: 4px 12px; border-radius: 4px;
+    }
+    .hero-note {
+      display: flex; align-items: flex-start; gap: 10px;
+      background: #fef9ec; border: 1px solid #f5e0a0;
+      border-radius: var(--radius); padding: 14px 18px;
+      font-size: 0.82rem; color: #7a6020;
+    }
+
+    /* STATUS CARD */
+    .status-card {
+      background: var(--ink);
+      border-radius: 18px;
+      padding: 28px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 2.2;
+      box-shadow: var(--shadow-lg);
+    }
+    .status-card .sc-title {
+      font-size: 0.65rem; letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.3); text-transform: uppercase;
+      margin-bottom: 16px; padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .sc-row { display: flex; justify-content: space-between; align-items: center; }
+    .sc-key { color: rgba(255,255,255,0.45); }
+    .sc-val { font-weight: 500; }
+    .sc-green { color: #6fcf97; }
+    .sc-yellow { color: #f5c842; }
+    .sc-red { color: #eb5757; }
+    .sc-blue { color: #56cfe1; }
+    .sc-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 12px 0; }
+
+    /* SECTIONS */
+    .wrap { padding: 80px 64px; }
+    .wrap.alt { background: var(--bg2); }
+    .inner { max-width: 1160px; margin: 0 auto; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--mono); font-size: 0.72rem;
+      color: var(--accent); letter-spacing: 0.12em;
+      text-transform: uppercase; margin-bottom: 14px;
+    }
+    .eyebrow::before { content:''; width:28px; height:1.5px; background:var(--accent); }
+    .sec-title {
+      font-family: var(--serif);
+      font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+      font-weight: 700; line-height: 1.1;
+      letter-spacing: -0.01em; margin-bottom: 12px;
+    }
+    .sec-sub { font-size: 0.95rem; color: var(--muted); font-weight: 300; max-width: 520px; margin-bottom: 52px; }
+
+    /* FLOW STEPS */
+    .flow { display: flex; flex-direction: column; gap: 0; }
+    .flow-step {
+      display: grid; grid-template-columns: 56px 1fr;
+      gap: 24px; position: relative;
+    }
+    .flow-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 27px; top: 56px;
+      width: 2px; height: calc(100% - 20px);
+      background: linear-gradient(to bottom, var(--border), transparent);
+    }
+    .flow-num {
+      width: 56px; height: 56px; flex-shrink: 0;
+      background: var(--white); border: 2px solid var(--border);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif); font-size: 1.3rem; font-weight: 700;
+      color: var(--accent); z-index: 1; position: relative;
+    }
+    .flow-body { padding: 8px 0 48px; }
+    .flow-label {
+      font-family: var(--mono); font-size: 0.68rem;
+      color: var(--accent); letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .flow-title {
+      font-family: var(--serif); font-size: 1.4rem;
+      font-weight: 700; margin-bottom: 10px;
+    }
+    .flow-desc { color: var(--muted); font-weight: 300; font-size: 0.95rem; }
+
+    /* TEAM CARDS */
+    .team-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .team-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .team-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+    .team-card-icon { font-size: 2rem; margin-bottom: 14px; }
+    .team-card-label {
+      font-family: var(--mono); font-size: 0.68rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .team-card-label.red { color: var(--red); }
+    .team-card-label.blue { color: var(--blue); }
+    .team-card-label.gold { color: #b45309; }
+    .team-card-label.green { color: var(--green); }
+    .team-card h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; }
+    .team-card p { font-size: 0.88rem; color: var(--muted); font-weight: 300; }
+
+    /* FEATURES */
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .feat {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 22px;
+      display: flex; gap: 14px; align-items: flex-start;
+      transition: box-shadow 0.2s;
+    }
+    .feat:hover { box-shadow: var(--shadow); }
+    .feat-icon {
+      width: 36px; height: 36px; flex-shrink: 0;
+      background: var(--accent-lt); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .feat-title { font-weight: 600; font-size: 0.88rem; margin-bottom: 4px; }
+    .feat-desc { font-size: 0.8rem; color: var(--muted); font-weight: 300; line-height: 1.6; }
+
+    /* GALLERY */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .gallery-item {
+      border-radius: var(--radius); overflow: hidden;
+      border: 1px solid var(--border);
+      cursor: pointer; position: relative;
+      background: var(--bg3);
+      aspect-ratio: 4/3;
+    }
+    .gallery-item img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block; transition: transform 0.4s ease;
+    }
+    .gallery-item:hover img { transform: scale(1.05); }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: rgba(30,26,20,0);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.3s;
+    }
+    .gallery-item:hover .gallery-overlay { background: rgba(30,26,20,0.35); }
+    .gallery-zoom {
+      color: #fff; font-size: 1.4rem; opacity: 0;
+      transition: opacity 0.3s; transform: scale(0.8);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .gallery-item:hover .gallery-zoom { opacity: 1; transform: scale(1); }
+
+    /* MODAL */
+    .modal {
+      display: none; position: fixed; inset: 0; z-index: 500;
+      background: rgba(20,16,12,0.92);
+      align-items: center; justify-content: center;
+      backdrop-filter: blur(8px);
+    }
+    .modal.open { display: flex; }
+    .modal-img {
+      max-width: 90vw; max-height: 85vh;
+      border-radius: var(--radius);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+    }
+    .modal-close {
+      position: absolute; top: 24px; right: 32px;
+      font-size: 2rem; color: rgba(255,255,255,0.7);
+      cursor: pointer; background: none; border: none;
+      font-family: var(--sans); line-height: 1;
+      transition: color 0.2s;
+    }
+    .modal-close:hover { color: #fff; }
+
+    /* BACK BUTTON */
+    .back-wrap { padding: 60px 64px; max-width: 1160px; margin: 0 auto; }
+    .btn-back {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--ink); color: #fff;
+      padding: 14px 28px; border-radius: 100px;
+      font-size: 0.88rem; font-weight: 600;
+      text-decoration: none; letter-spacing: 0.02em;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-back:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(30,26,20,0.2); }
+
+    /* FOOTER */
+    footer {
+      background: var(--ink); color: rgba(255,255,255,0.45);
+      padding: 32px 64px; text-align: center; font-size: 0.82rem;
+    }
+    footer span { color: var(--accent); }
+
+    /* RESPONSIVE */
+    @media (max-width: 960px) {
+      nav { padding: 16px 24px; }
+      .hero { grid-template-columns: 1fr; padding: 120px 24px 60px; gap: 40px; }
+      .status-card { display: none; }
+      .wrap { padding: 60px 24px; }
+      .team-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .back-wrap { padding: 40px 24px; }
+      footer { padding: 28px 24px; }
+    }
+    @media (max-width: 560px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
-<style>
-    p{
-        font-family: Arial, Helvetica, sans-serif;
-    }
-button {
-       background: #d97706;
-  color: #fff;
-  border: none;
-  padding: 12px;
-  width: 25%;
-  font-size: 15px;
-  border-radius: 6px;
-  cursor: pointer;
-  text-decoration: none;
-  text-align: center;
-    }
-    body {
-  font-family:'Courier New', Courier, monospace;
-  background: linear-gradient(135deg, #ecedf2, #d9d4d4);
-  text-align: center;
-  padding: 20px;
-} 
-
-h3,h2{ 
-  color: #020000;
-  margin-bottom: 20px;
-} 
-
-.gallery {
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-}
-
-.gallery img {
-  width: 100%;
-  border-radius: 10px;
-  cursor:pointer;
-  transition: transform 0.3s;
-}
-
-.gallery img:hover {
-  transform: scale(1.05);
-}
-
-/* Modal (fullscreen image) */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 100;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.9);
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  max-width: 90%;
-  max-height: 80%;
-  border-radius: 10px;
-}
-
-#close {
-  position: absolute;
-  top: 20px;
-  right: 40px;
-  font-size: 40px;
-  color: white;
-  cursor: pointer;
-}
-</style>
 <body>
-   <h2> TRINETRA – IoT Based Cyber Defense System</h2>
-<p>Note:"This project is a controlled simulation for educational purpose only.
-   Unauthorized replication or misuse is prohibited"</p>
-<h3>🔹 Introduction</h3>
-<p>
 
-TRINETRA is a cybersecurity project designed to detect, analyze, and defend against network attacks in real time. It integrates Red Team (attackers), Blue Team (defenders), Honeypot (trap system), and IoT (ESP32/ESP8266 for alerts) into a single ecosystem.
-
-This project gives a hands-on simulation of real-world cyberattacks and defenses, making it both educational and practical for modern cybersecurity applications.
-
-</p>
----
-
-<h3>🔹 Project Flow (Top to Bottom)</h3>
-<p>
-1. Red Team (Attacker Simulation)
-
-Red Team uses scanning techniques (SYN, FIN, NULL, Xmas scans, etc.) to probe the target network.
-
-Their role is to behave like real attackers trying to find vulnerabilities in servers or systems.
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">Ram<span>.</span></a>
+  <a href="index.html" class="nav-back">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Portfolio
+  </a>
+</nav>
 
 
-
-2. Blue Team (Defender Monitoring)
-
-The Blue Team continuously monitors incoming traffic using Python scripts (Scapy library).
-
-They analyze TCP/IP flags and packet behavior to detect abnormal scans or intrusion attempts.
-
-When a scan or suspicious activity is detected, the Blue Team system logs the details.
-
-
-
-3. Honeypot (Deception System)
-
-The Honeypot pretends to be a real vulnerable machine (fake server).
-
-It tricks attackers into interacting with it and collects information about their tools, IP addresses, and behavior.
-
-This intelligence is shared with the Blue Team to improve defenses.
-
-
-
-4. IoT Device (ESP32/ESP8266)
-
-Once an attack is detected, an alert is sent to an IoT device.
-
-The ESP32 can trigger a buzzer, LED light, or message notification to immediately alert the system administrator.
-
-This brings real-time physical awareness of cyber threats.
-
-
-
-5. Defense Action (Blocking)
-
-The Blue Team system automatically blocks the attacker’s IP address to stop further attacks.
-
-This ensures that the protected server or network remains safe from intrusion attempts.
-
-
-</p>
-
-
----
-
-<h3>🔹 Key Features</h3>
-
-<p>
-✅ Detects multiple scan types (SYN, NULL, FIN, Xmas).
-✅ Honeypot traps attackers for intelligence gathering.
-✅ IoT-based real-time alerting (ESP32/ESP8266).
-✅ Automated IP blocking for defense.
-✅ Educational project simulating Red vs Blue cybersecurity operations.
-</p>
-
----
-<section>
-<h3> Sample Screenshot</h3><div class="gallery">
-<img src="WhatsApp Image 2025-09-14 at 01.10.39_86356472.jpg">
-<img src="s1.jpg" alt="">
-<img src="s2.jpg" alt="">
-<img src="s3.jpg" alt="">
-<img src="ss1.jpg" alt="">
-<img src="ss2.jpg" alt="">
-</div>
-  <div id="modal" class="modal">
-    <span id="close">&times;</span>
-    <img class="modal-content" id="modal-img">
+<!-- HERO -->
+<div style="max-width:1160px;margin:0 auto;padding:0 64px;">
+<div class="hero" style="padding-left:0;padding-right:0;">
+  <div>
+    <div class="hero-eyebrow">Cybersecurity · IoT · In Active Development</div>
+    <h1>TRINETRA<br><em>Cyber Defense System</em></h1>
+    <p class="hero-sub">An IoT-integrated cyber defense framework combining Red Team attack simulation, Blue Team monitoring, Honeypot deception, and real-time ESP32 hardware alerts — all in one ecosystem.</p>
+    <div class="hero-tags">
+      <span class="hero-tag">Network Security</span>
+      <span class="hero-tag">Red / Blue Team</span>
+      <span class="hero-tag">Honeypot</span>
+      <span class="hero-tag">ESP32</span>
+      <span class="hero-tag">Python · Scapy</span>
+      <span class="hero-tag">IoT Alerts</span>
+      <span class="hero-tag">IP Blocking</span>
+    </div>
+    <div class="hero-note">
+      <span>⚠️</span>
+      <span>This project is a <strong>controlled simulation for educational purposes only.</strong> Unauthorized replication or misuse is strictly prohibited.</span>
+    </div>
   </div>
-</section>
-<h3>🔹 Role of Each Component</h3>
-
-<p>
-Red Team: Simulates attacker behavior.
-
-Blue Team: Detects, analyzes, and defends against threats.
-
-Honeypot: Gathers intelligence and misleads attackers.
-
-IoT Device: Provides real-time physical alerts.
-</p>
-
-
-
----
-
-<h3>
-
-🔹 Applications</h3>
-
-<p>College/University cybersecurity learning projects.
-
-Simulation of real-world network defense environments.
-
-Small-scale intrusion detection systems (IDS).
-
-Can be extended to industry use with cloud-based alerts and AI analysis.</p>
+  <div class="status-card">
+    <div class="sc-title">// system status</div>
+    <div class="sc-row"><span class="sc-key">honeypot</span><span class="sc-val sc-green">● LISTENING</span></div>
+    <div class="sc-divider"></div>
+    <div class="sc-row"><span class="sc-key">blue_team</span><span class="sc-val sc-blue">● MONITORING</span></div>
+    <div class="sc-divider"></div>
+    <div class="sc-row"><span class="sc-key">red_team</span><span class="sc-val sc-red">● ARMED</span></div>
+    <div class="sc-divider"></div>
+    <div class="sc-row"><span class="sc-key">esp32</span><span class="sc-val sc-green">● CONNECTED</span></div>
+    <div class="sc-divider"></div>
+    <div class="sc-row"><span class="sc-key">threats_blocked</span><span class="sc-val sc-yellow">3</span></div>
+    <div class="sc-divider"></div>
+    <div class="sc-row"><span class="sc-key">packets_scanned</span><span class="sc-val">18,443</span></div>
+    <div class="sc-divider"></div>
+    <div class="sc-row"><span class="sc-key">status</span><span class="sc-val sc-green">DEFENDED ✓</span></div>
+  </div>
+</div>
+</div>
 
 
+<!-- TEAM ROLES -->
+<div class="wrap alt">
+<div class="inner">
+  <div class="eyebrow">01 — Components</div>
+  <h2 class="sec-title">Four Systems, One Shield.</h2>
+  <p class="sec-sub">TRINETRA integrates four independent components that work in concert to detect, trap, and block attackers.</p>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-card-icon">🔴</div>
+      <div class="team-card-label red">Red Team</div>
+      <h3>Attacker Simulation</h3>
+      <p>Simulates real-world attack behavior using SYN, FIN, NULL, and Xmas scans. Probes the network to find vulnerabilities — just like an actual threat actor would.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-card-icon">🔵</div>
+      <div class="team-card-label blue">Blue Team</div>
+      <h3>Defender Monitoring</h3>
+      <p>Continuously monitors traffic using Python and the Scapy library. Analyzes TCP/IP flags, detects abnormal packet behavior, and logs every suspicious event.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-card-icon">🍯</div>
+      <div class="team-card-label gold">Honeypot</div>
+      <h3>Deception & Intelligence</h3>
+      <p>Masquerades as a real vulnerable machine to lure attackers. Captures their IP addresses, tools, and behavior patterns — feeding that intelligence back to the Blue Team.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-card-icon">📡</div>
+      <div class="team-card-label green">IoT Device</div>
+      <h3>Real-Time Hardware Alerts</h3>
+      <p>ESP32/ESP8266 triggers a buzzer, LED, or message notification the instant a threat is detected — bringing physical, real-time awareness to cyber events.</p>
+    </div>
+  </div>
+</div>
+</div>
 
----
 
-<h3>🔹 Conclusion</h3>
+<!-- PROJECT FLOW -->
+<div class="wrap">
+<div class="inner">
+  <div class="eyebrow">02 — System Flow</div>
+  <h2 class="sec-title">How It Works.</h2>
+  <p class="sec-sub">From attack simulation to automatic blocking — the full pipeline.</p>
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-num">1</div>
+      <div class="flow-body">
+        <div class="flow-label">Red Team</div>
+        <div class="flow-title">Attack Simulation Begins</div>
+        <p class="flow-desc">The Red Team uses network scanning techniques — SYN, FIN, NULL, Xmas scans — to probe the target system and find open ports or vulnerabilities, exactly as a real attacker would.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">2</div>
+      <div class="flow-body">
+        <div class="flow-label">Honeypot</div>
+        <div class="flow-title">Attacker Gets Trapped</div>
+        <p class="flow-desc">The Honeypot presents itself as a real vulnerable machine. Attackers interact with it, unknowingly revealing their tools, techniques, and IP addresses — all logged for analysis.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">3</div>
+      <div class="flow-body">
+        <div class="flow-label">Blue Team</div>
+        <div class="flow-title">Threat Detected & Logged</div>
+        <p class="flow-desc">Blue Team Python scripts (powered by Scapy) analyze incoming traffic in real time. Abnormal TCP/IP flag patterns trigger immediate alerts and detailed logging of the intrusion attempt.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">4</div>
+      <div class="flow-body">
+        <div class="flow-label">IoT — ESP32</div>
+        <div class="flow-title">Hardware Alert Fires</div>
+        <p class="flow-desc">Once a threat is confirmed, the ESP32 device triggers a real-world alert — buzzer, LED, or push notification — giving the system administrator instant physical awareness of the attack.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">5</div>
+      <div class="flow-body">
+        <div class="flow-label">Blue Team</div>
+        <div class="flow-title">Attacker IP Blocked</div>
+        <p class="flow-desc">The Blue Team system automatically blacklists the attacker's IP address, shutting down further intrusion attempts and keeping the protected server safe.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 
-<p>TRINETRA demonstrates how cybersecurity defense systems work in reality by combining network monitoring, deception, and IoT alerts. It gives students practical exposure to both offensive (Red Team) and defensive (Blue Team) roles while integrating cutting-edge IoT technology for 
-    real-time alerts.</p>
-    <a href="index.html"><button>Back to Portfolio</button></a>
-</body>
+
+<!-- FEATURES -->
+<div class="wrap alt">
+<div class="inner">
+  <div class="eyebrow">03 — Key Features</div>
+  <h2 class="sec-title">What TRINETRA Does.</h2>
+  <p class="sec-sub">Built to detect, deceive, alert, and block — all in real time.</p>
+  <div class="features-grid">
+    <div class="feat"><div class="feat-icon">🔍</div><div><div class="feat-title">Multi-Scan Detection</div><div class="feat-desc">Detects SYN, NULL, FIN, and Xmas scan types used by attackers to probe networks.</div></div></div>
+    <div class="feat"><div class="feat-icon">🍯</div><div><div class="feat-title">Honeypot Intelligence</div><div class="feat-desc">Lures attackers into a fake machine and harvests data about their methods and identity.</div></div></div>
+    <div class="feat"><div class="feat-icon">📡</div><div><div class="feat-title">IoT Real-Time Alerts</div><div class="feat-desc">ESP32/ESP8266 fires instant hardware alerts — buzzer, LED, or notification — on threat detection.</div></div></div>
+    <div class="feat"><div class="feat-icon">🛡</div><div><div class="feat-title">Automated IP Blocking</div><div class="feat-desc">Blue Team automatically blocks attacker IPs to stop intrusions dead in their tracks.</div></div></div>
+    <div class="feat"><div class="feat-icon">📊</div><div><div class="feat-title">Traffic Analysis</div><div class="feat-desc">Python Scapy scripts analyze TCP/IP packets in real time to spot abnormal behavior patterns.</div></div></div>
+    <div class="feat"><div class="feat-icon">🎓</div><div><div class="feat-title">Red vs Blue Simulation</div><div class="feat-desc">Hands-on simulation of real-world attack and defense operations for practical cybersecurity learning.</div></div></div>
+  </div>
+</div>
+</div>
+
+
+<!-- GALLERY -->
+<div class="wrap">
+<div class="inner">
+  <div class="eyebrow">04 — Screenshots</div>
+  <h2 class="sec-title">Project in Action.</h2>
+  <p class="sec-sub">Screenshots from the live simulation environment.</p>
+  <div class="gallery-grid">
+    <div class="gallery-item" onclick="openModal(this)">
+      <img src="WhatsApp Image 2025-09-14 at 01.10.39_86356472.jpg" alt="TRINETRA screenshot 1" />
+      <div class="gallery-overlay"><div class="gallery-zoom">⊕</div></div>
+    </div>
+    <div class="gallery-item" onclick="openModal(this)">
+      <img src="s1.jpg" alt="TRINETRA screenshot 2" />
+      <div class="gallery-overlay"><div class="gallery-zoom">⊕</div></div>
+    </div>
+    <div class="gallery-item" onclick="openModal(this)">
+      <img src="s2.jpg" alt="TRINETRA screenshot 3" />
+      <div class="gallery-overlay"><div class="gallery-zoom">⊕</div></div>
+    </div>
+    <div class="gallery-item" onclick="openModal(this)">
+      <img src="s3.jpg" alt="TRINETRA screenshot 4" />
+      <div class="gallery-overlay"><div class="gallery-zoom">⊕</div></div>
+    </div>
+    <div class="gallery-item" onclick="openModal(this)">
+      <img src="ss1.jpg" alt="TRINETRA screenshot 5" />
+      <div class="gallery-overlay"><div class="gallery-zoom">⊕</div></div>
+    </div>
+    <div class="gallery-item" onclick="openModal(this)">
+      <img src="ss2.jpg" alt="TRINETRA screenshot 6" />
+      <div class="gallery-overlay"><div class="gallery-zoom">⊕</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="closeModal(event)">
+  <button class="modal-close" onclick="closeModal()">&times;</button>
+  <img class="modal-img" id="modal-img" src="" alt="Screenshot" />
+</div>
+
+
+<!-- APPLICATIONS -->
+<div class="wrap alt">
+<div class="inner">
+  <div class="eyebrow">05 — Applications</div>
+  <h2 class="sec-title">Where It Fits.</h2>
+  <p class="sec-sub">From classroom labs to scalable real-world deployments.</p>
+  <div class="features-grid">
+    <div class="feat"><div class="feat-icon">🏫</div><div><div class="feat-title">Academic Labs</div><div class="feat-desc">Perfect for college and university cybersecurity courses as a practical learning project.</div></div></div>
+    <div class="feat"><div class="feat-icon">🧪</div><div><div class="feat-title">Security Research</div><div class="feat-desc">Simulate attack/defense scenarios to study real-world intrusion detection in a safe environment.</div></div></div>
+    <div class="feat"><div class="feat-icon">🏢</div><div><div class="feat-title">Small-Scale IDS</div><div class="feat-desc">Deployable as a lightweight intrusion detection system for small networks and labs.</div></div></div>
+    <div class="feat"><div class="feat-icon">☁️</div><div><div class="feat-title">Extensible to Cloud</div><div class="feat-desc">Architecture can be extended with cloud-based alerts and AI-powered threat analysis.</div></div></div>
+    <div class="feat"><div class="feat-icon">🔬</div><div><div class="feat-title">CTF Training</div><div class="feat-desc">Useful for preparing Red/Blue team CTF competitions with realistic attack simulation.</div></div></div>
+    <div class="feat"><div class="feat-icon">📱</div><div><div class="feat-title">IoT Security Demos</div><div class="feat-desc">Showcases how IoT hardware can be integrated into cybersecurity monitoring pipelines.</div></div></div>
+  </div>
+</div>
+</div>
+
+
+<!-- BACK BUTTON -->
+<div class="back-wrap">
+  <a href="index.html" class="btn-back">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Portfolio
+  </a>
+</div>
+
+
+<footer>
+  <p>© 2025 <span>Ram Prasad S M</span> — TRINETRA Project</p>
+</footer>
+
+
 <script>
-// Step 1: Select the elements
-const images = document.querySelectorAll(".gallery img");
-const modal = document.getElementById("modal");
-const modalImg = document.getElementById("modal-img");
-const closeBtn = document.getElementById("close");
-
-// Step 2: Add click event to every image
-images.forEach(img => {
-  img.addEventListener("click", () => {
-    modal.style.display = "flex"; // show modal
-    modalImg.src = img.src;       // set clicked image inside modal
-  });
-});
-
-// Step 3: Close modal when clicking "×"
-closeBtn.addEventListener("click", () => {
-  modal.style.display = "none";
-});
-
-// Step 4: Close modal if clicking outside the image
-modal.addEventListener("click", (e) => {
-  if (e.target === modal) {
-    modal.style.display = "none";
+  function openModal(item) {
+    const src = item.querySelector('img').src;
+    document.getElementById('modal-img').src = src;
+    document.getElementById('modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
   }
-});</script>
+  function closeModal(e) {
+    if (!e || e.target === document.getElementById('modal') || e.target.classList.contains('modal-close')) {
+      document.getElementById('modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal({target: document.getElementById('modal')}); });
+</script>
+</body>
 </html>
