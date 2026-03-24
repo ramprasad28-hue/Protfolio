@@ -10,9 +10,7 @@
 
 ## 📸 Preview
 
-> Live at: **[https://YOUR-USERNAME.github.io/portfolio](https://YOUR-USERNAME.github.io/portfolio)**  
-> *(Replace with your actual GitHub Pages URL after deploying)*
-
+> Live at: **[https://ramprasad28-hue.github.io/portfolio](https://github.com/ramprasad28-hue/Protfolio.git)** ] 
 ---
 
 ## 📁 Project Structure
@@ -55,7 +53,7 @@ portfolio/
 
 | Project | Tech | Description |
 |---|---|---|
-| **TRINETRA** | Python, Scapy, ESP32 | IoT-integrated cyber defense system |
+| **TRINETRA** | Python, Scapy | IoT-integrated cyber defense system |
 | **Custom Dashboard Builder** | Django, MySQL, JS, Chart.js | Full-stack analytics platform — Halleyx Pre-Placement Challenge 2026 |
 | **Notes App** | HTML, CSS, JS | localStorage-based notes manager |
 | **Smart Contact Form** | HTML, CSS, JS | Client-side validated form |
