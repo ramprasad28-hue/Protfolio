@@ -187,10 +187,56 @@
     /* REVEAL */
     .reveal { opacity: 1; transform: none; }
 
+    /* TIMELINE */
+    .timeline { display: flex; flex-direction: column; gap: 0; max-width: 760px; }
+    .tl-item { display: grid; grid-template-columns: 28px 1fr; gap: 24px; position: relative; }
+    .tl-item:not(:last-child)::after { content:''; position:absolute; left:13px; top:28px; width:2px; height:calc(100% - 8px); background:linear-gradient(to bottom, var(--border), transparent); }
+    .tl-dot { width:28px; height:28px; border-radius:50%; background:var(--white); border:2px solid var(--accent); flex-shrink:0; margin-top:4px; z-index:1; }
+    .tl-dot-done { background:var(--accent); }
+    .tl-card { padding: 0 0 44px; }
+    .tl-card-done .tl-title { color: var(--accent); }
+    .tl-time { font-family:var(--mono); font-size:0.68rem; color:var(--accent); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px; }
+    .tl-title { font-family:var(--serif); font-size:1.3rem; font-weight:700; margin-bottom:8px; }
+    .tl-desc { font-size:0.88rem; color:var(--muted); font-weight:300; line-height:1.7; }
+
+    /* GITHUB */
+    .github-layout { display:grid; grid-template-columns:1fr 340px; gap:40px; align-items:start; }
+    .github-graph-wrap { background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:28px; }
+    .github-graph-label { font-family:var(--mono); font-size:0.7rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:16px; }
+    .github-graph { width:100%; border-radius:6px; display:block; }
+    .github-graph-fallback { font-size:0.85rem; color:var(--muted); padding:20px; background:var(--bg2); border-radius:8px; }
+    .github-graph-hint { font-family:var(--mono); font-size:0.65rem; color:var(--muted); margin-top:12px; }
+    .github-graph-hint code { background:var(--bg2); padding:2px 6px; border-radius:4px; color:var(--accent); }
+    .github-links { display:flex; flex-direction:column; gap:12px; }
+    .github-link-card { display:flex; align-items:center; gap:14px; background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; text-decoration:none; color:var(--ink); transition:border-color 0.2s, box-shadow 0.2s; }
+    .github-link-card:hover { border-color:var(--accent); box-shadow:var(--shadow); }
+    .glc-icon { width:38px; height:38px; background:var(--bg2); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+    .glc-label { font-size:0.72rem; color:var(--muted); }
+    .glc-val { font-size:0.85rem; font-weight:600; }
+    .glc-arrow { margin-left:auto; color:var(--muted); font-size:1rem; transition:transform 0.2s; }
+    .github-link-card:hover .glc-arrow { transform:translateX(4px); color:var(--accent); }
+
+    /* HAMBURGER */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; z-index: 300; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu {
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(250,247,242,0.97); backdrop-filter: blur(20px);
+      z-index: 250; flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: var(--serif); font-size: 2rem; font-weight: 700; color: var(--ink); text-decoration: none; transition: color 0.2s; }
+    .mobile-menu a:hover { color: var(--accent); }
+    .mobile-menu .m-cta { background: var(--accent); color: #fff !important; padding: 12px 36px; border-radius: 100px; font-size: 1.2rem; }
+
     /* RESPONSIVE */
     @media (max-width: 960px) {
       nav { padding: 16px 24px; }
       .nav-links { display: none; }
+      .hamburger { display: flex; }
       #home, .section-wrap { padding: 100px 24px 70px; }
       .hero-inner { grid-template-columns: 1fr; }
       .hero-photo-wrap { display: none; }
@@ -202,6 +248,8 @@
       .contact-layout { grid-template-columns: 1fr; gap: 48px; }
       .form-row { grid-template-columns: 1fr; }
       footer { flex-direction: column; gap: 14px; text-align: center; padding: 28px 24px; }
+      .github-layout { grid-template-columns: 1fr; }
+      .proj-modules { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -216,7 +264,19 @@
     <li><a href="#projects">Projects</a></li>
     <li><a href="#contact" class="nav-cta">Hire Me</a></li>
   </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#skills" onclick="closeMenu()">Skills</a>
+  <a href="#projects" onclick="closeMenu()">Projects</a>
+  <a href="Resume_RamPrasad.pdf" download onclick="closeMenu()">Resume ↓</a>
+  <a href="#contact" class="m-cta" onclick="closeMenu()">Hire Me</a>
+</div>
 
 <!-- HERO -->
 <section id="home">
@@ -227,10 +287,14 @@
     <div>
       <div class="hero-tag">Open to Internship &amp; Collaboration</div>
       <h1 class="hero-heading">Building the Web.<br><em>Securing the Stack.</em></h1>
-      <p class="hero-sub">Hi, I'm <strong>Ram Prasad S M</strong> — a 3rd-year CS student from Erode, Tamil Nadu passionate about <strong>web development</strong> and <strong>cybersecurity</strong>. I build things, then try to break them.</p>
+      <p class="hero-sub">Hi, I'm <strong>Ram Prasad S M</strong> — a 3rd-year CS student from Madurai passionate about <strong>web development</strong> and <strong>cybersecurity</strong>. I build things, then try to break them.</p>
       <div class="hero-actions">
         <a href="#projects" class="btn btn-fill">See My Projects →</a>
         <a href="#contact" class="btn btn-outline">Let's Talk</a>
+        <a href="Resume_RamPrasad.pdf" download class="btn btn-outline" style="gap:8px;">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Resume
+        </a>
       </div>
     </div>
     <div class="hero-photo-wrap">
@@ -260,7 +324,7 @@
     <div class="about-left reveal">
       <img src="Profile.webp" alt="Ram Prasad" class="about-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
       <div class="about-img-placeholder" style="display:none;"><span>📸</span>place Profile.webp here</div>
-      <div class="about-corner-tag">📍 Erode, Tamil Nadu</div>
+      <div class="about-corner-tag">📍 Madurai, Tamil Nadu</div>
     </div>
     <div class="about-text reveal">
       <p>I'm a <strong>Computer Science undergrad</strong> who genuinely enjoys the craft of building on the web — from writing clean HTML to wiring up JavaScript logic that actually works.</p>
@@ -289,6 +353,15 @@
       <p>I focus on building interactive, accessible web experiences and securing them from the ground up. My approach: learn by doing, break things to understand them.</p>
       <p>Currently deepening my knowledge in network security and embedded IoT systems.</p>
       <div class="skill-chips-wrap">
+        <div class="skill-chips-label">Backend &amp; Frameworks</div>
+        <div class="chip-group">
+          <span class="chip ac">Python</span>
+          <span class="chip ac">Django</span>
+          <span class="chip ac">Django REST Framework</span>
+          <span class="chip">MySQL</span>
+          <span class="chip">REST APIs</span>
+          <span class="chip">Chart.js</span>
+        </div>
         <div class="skill-chips-label">Cybersecurity &amp; IoT</div>
         <div class="chip-group">
           <span class="chip ac">Network Security</span>
@@ -315,6 +388,8 @@
       <div class="skill-row"><div class="skill-row-top"><span class="skill-name">Network Security</span><span class="skill-pct">70%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:70%"></div></div></div>
       <div class="skill-row"><div class="skill-row-top"><span class="skill-name">IoT / ESP32</span><span class="skill-pct">55%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:55%"></div></div></div>
       <div class="skill-row"><div class="skill-row-top"><span class="skill-name">Git &amp; Version Control</span><span class="skill-pct">60%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:60%"></div></div></div>
+      <div class="skill-row"><div class="skill-row-top"><span class="skill-name">Python</span><span class="skill-pct">65%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:65%"></div></div></div>
+      <div class="skill-row"><div class="skill-row-top"><span class="skill-name">Django &amp; REST Framework</span><span class="skill-pct">60%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" style="width:60%"></div></div></div>
     </div>
   </div>
 </div>
@@ -410,7 +485,6 @@
       </div>
     </div>
 
-
     <div class="project-card reveal">
       <div class="pv"><div class="pv-dots"></div><div class="pv-icon">🪪</div><div class="pv-label">CSS Design</div></div>
       <div class="pb">
@@ -426,11 +500,110 @@
 </div>
 </div>
 
+
+<!-- HALLEYX TIMELINE -->
+<div class="section-wrap alt">
+<div class="section-inner" id="journey">
+  <div class="eyebrow">04 — Challenge Story</div>
+  <h2 class="sec-title">The Halleyx Sprint</h2>
+  <p class="sec-sub">How I built a production full-stack app in under 24 hours — competing against 400+ candidates.</p>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="tl-time">Hour 0 — Brief Received</div>
+        <div class="tl-title">Read the spec. Planned the stack.</div>
+        <p class="tl-desc">Got the Halleyx Pre-Placement Challenge II brief — a Custom Dashboard Builder with Customer Orders, 7 widget types, and drag-and-drop layout. Decided on Django + MySQL backend, Vanilla JS frontend. No framework. No shortcuts.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="tl-time">Hours 1–6 — Backend First</div>
+        <div class="tl-title">Built 10+ REST API endpoints with Django.</div>
+        <p class="tl-desc">Designed the Customer Order model with DecimalField precision for money, auto-calculated totals, and full CRUD. Wired up Django REST Framework serializers and wrote every API endpoint — orders, widgets, dashboard config — tested with Postman as I went.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="tl-time">Hours 6–14 — Frontend Sprint</div>
+        <div class="tl-title">Orders module, config engine, and charts.</div>
+        <p class="tl-desc">Built the full Orders Management UI — 15-field form, live validation, CSV upload, real-time search and filter. Then the widget config panel with per-widget settings. Then Chart.js rendering for Bar, Line, Area, Scatter, Pie charts — all pulling from live API data.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="tl-time">Hours 14–20 — Polish</div>
+        <div class="tl-title">Dark/light theme, responsive, toast system.</div>
+        <p class="tl-desc">Implemented full dark/light mode toggle using CSS variables — instant switching, persisted via localStorage. Made every page responsive. Added toast notifications for every user action. Built loading skeleton states so nothing felt broken while data loaded.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot tl-dot-done"></div>
+      <div class="tl-card tl-card-done">
+        <div class="tl-time">Hour 24 — Submitted ✓</div>
+        <div class="tl-title">Delivered on time. Full spec met.</div>
+        <p class="tl-desc">Submitted the complete working application before the deadline. Every requirement from the spec was implemented — all 7 widget types, dashboard persistence, responsive layout, date filtering, empty states, and clean UX. Built from scratch. No team. No framework. 400+ participants.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- GITHUB ACTIVITY -->
+<div class="section-wrap">
+<div class="section-inner" id="github">
+  <div class="eyebrow">05 — Open Source</div>
+  <h2 class="sec-title">GitHub Activity</h2>
+  <p class="sec-sub">My public contributions and repositories — updated live.</p>
+  <div class="github-layout">
+    <div class="github-graph-wrap">
+      <div class="github-graph-label">Contribution Graph</div>
+      <img
+        src="https://ghchart.rshah.org/b85c38/RamPrasad-SM"
+        alt="GitHub contribution chart"
+        class="github-graph"
+        onerror="this.parentElement.innerHTML='<div class=github-graph-fallback>Update <strong>YOUR-GITHUB-USERNAME</strong> in the img src to see your graph</div>'"
+      />
+      <div class="github-graph-hint">Replace <code>RamPrasad-SM</code> in the image URL with your actual GitHub username</div>
+    </div>
+    <div class="github-links">
+      <a href="https://github.com/ramprasad28-hue" target="_blank" class="github-link-card">
+        <div class="glc-icon">🐙</div>
+        <div>
+          <div class="glc-label">Main Profile</div>
+          <div class="glc-val">github.com/ramprasad28-hue</div>
+        </div>
+        <div class="glc-arrow">→</div>
+      </a>
+      <a href="https://github.com/ramprasad28-hue/protfolio" target="_blank" class="github-link-card">
+        <div class="glc-icon">🌐</div>
+        <div>
+          <div class="glc-label">This Portfolio</div>
+          <div class="glc-val">github.com/ramprasad28-hue/protfolio</div>
+        </div>
+        <div class="glc-arrow">→</div>
+      </a>
+      <a href="https://github.com/ramprasad28-hue?tab=repositories" target="_blank" class="github-link-card">
+        <div class="glc-icon">📁</div>
+        <div>
+          <div class="glc-label">All Repositories</div>
+          <div class="glc-val">Python · HTML · Django projects</div>
+        </div>
+        <div class="glc-arrow">→</div>
+      </a>
+    </div>
+  </div>
+</div>
+</div>
+
 <!-- CONTACT -->
 <div class="section-wrap">
 <div class="section-inner" id="contact">
   <div class="reveal">
-    <div class="eyebrow">04 — Contact</div>
+    <div class="eyebrow">06 — Contact</div>
     <h2 class="sec-title">Let's Work Together</h2>
     <p class="sec-sub">Open to internships, collabs, and good conversations.</p>
   </div>
@@ -481,6 +654,20 @@
     document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
   });
 
+  // Hamburger menu
+  const hbg = document.getElementById('hamburger');
+  const mob = document.getElementById('mobileMenu');
+  hbg.addEventListener('click', () => {
+    hbg.classList.toggle('open');
+    mob.classList.toggle('open');
+    document.body.style.overflow = mob.classList.contains('open') ? 'hidden' : '';
+  });
+  function closeMenu() {
+    hbg.classList.remove('open');
+    mob.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
   // Sections always visible
 
   // Animate skill bars when visible
@@ -499,9 +686,7 @@
     const n = document.getElementById('c-name').value.trim();
     const em = document.getElementById('c-email').value.trim();
     const s = document.getElementById('c-sub').value.trim();
-    const m = document.getElementById('c-msg').value.trim();
-    if (!n)  return alert('Please enter your name.');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return alert('Please enter a valid email.');
-    if (!s)  return alert('Please add a subject.');
-    if (m.length < 10) {
-    return alert('Message ',m);}}
+  }
+</script>
+</body>
+</html>
